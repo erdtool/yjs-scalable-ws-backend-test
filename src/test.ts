@@ -48,12 +48,18 @@ const run = async () => {
   await wait(0.3);
 
   wsp1.awareness.destroy();
-  wsp2.awareness.destroy();
-
   wsp1.destroy();
-  wsp2.destroy();
-
   doc1.destroy();
+  
+  await wait(0.3);
+
+  console.log('states 2');
+  console.log(wsp2.awareness.getStates());
+
+  await wait(0.3);
+
+  wsp2.awareness.destroy();
+  wsp2.destroy();
   doc2.destroy();
 }
 
