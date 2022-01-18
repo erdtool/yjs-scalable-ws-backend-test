@@ -14,14 +14,14 @@ const run = async () => {
   const doc2 = new Y.Doc();
 
   const wsp1 = new WebsocketProvider(wsUrl(3001), id, doc1, {WebSocketPolyfill: WebSocket as any});
-  const wsp2 = new WebsocketProvider(wsUrl(3001), id, doc2, {WebSocketPolyfill: WebSocket as any});
+  const wsp2 = new WebsocketProvider(wsUrl(3002), id, doc2, {WebSocketPolyfill: WebSocket as any});
 
   await wait(1);
 
-  console.log('states 1');
+  console.log('states 1 - uninitialized');
   console.log(wsp1.awareness.getStates());
 
-  console.log('states 2');
+  console.log('states 2 - uninitialized');
   console.log(wsp2.awareness.getStates());
 
   wsp1.awareness.setLocalStateField('foo', 1);
@@ -29,20 +29,21 @@ const run = async () => {
 
   await wait(0.3);
 
-  console.log('states 1');
+  console.log('states 1 - initialized');
   console.log(wsp1.awareness.getStates());
 
-  console.log('states 2');
+  console.log('states 2 - initialized');
   console.log(wsp2.awareness.getStates());
 
+  wsp1.awareness.setLocalStateField('foo', 4);
   wsp2.awareness.setLocalStateField('foo', 3);
 
   await wait(0.3);
   
-  console.log('states 1');
+  console.log('states 1 - changed');
   console.log(wsp1.awareness.getStates());
 
-  console.log('states 2');
+  console.log('states 2 - changed');
   console.log(wsp2.awareness.getStates());
   
   await wait(0.3);
@@ -53,7 +54,7 @@ const run = async () => {
   
   await wait(0.3);
 
-  console.log('states 2');
+  console.log('states 2 - post states 1 destroyed');
   console.log(wsp2.awareness.getStates());
 
   await wait(0.3);
